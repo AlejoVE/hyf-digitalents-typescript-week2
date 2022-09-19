@@ -63,7 +63,7 @@ var colors = require('colors');
 // Filter out any questions with tag "film"
 // Sort them according to the difficulty
 // Log the output to the user
-var fetchQuestion = function () { return __awaiter(_this, void 0, void 0, function () {
+var fetchQuestions = function () { return __awaiter(_this, void 0, void 0, function () {
     var res, data, filteredData, arr, sortedArray;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -107,7 +107,7 @@ var fetchQuestion = function () { return __awaiter(_this, void 0, void 0, functi
         }
     });
 }); };
-fetchQuestion();
+fetchQuestions();
 // Sample Output:
 // Who succeeded Winston Churchill when he resigned in 1955?
 // Which author wrote 'The Left Hand of Darkness'?
