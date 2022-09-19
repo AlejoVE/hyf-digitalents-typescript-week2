@@ -1,23 +1,11 @@
-const colors = require('colors');
-
 import { Question } from "./types";
-import { sortByDifficulty, fetchQuestions } from "./helpers";
-
-// Fetch a set of questions from https://the-trivia-api.com/api/questions?limit=5
-// Filter out any questions with tag "film"
-// Sort them according to the difficulty
-// Log the output to the user
+import { sortByDifficulty, fetchQuestions, displayQuestions } from "./helpers";
 
 const init = async (): Promise<void> => {
-
     console.clear();
-
     const questions: Question[] = await fetchQuestions();
     const formattedData: Question[] = sortByDifficulty(questions);
-
-    formattedData.forEach(({ question, difficulty }) => {
-        console.log(`${colors.cyan(`${question}`).bold} || ${colors.magenta(`Difficulty: ${difficulty}`).italic}\n`);
-    })
+    displayQuestions(formattedData)
 }
 
 init();

@@ -58,18 +58,34 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 exports.__esModule = true;
-exports.fetchQuestions = exports.sortByDifficulty = void 0;
+exports.displayQuestions = exports.fetchQuestions = exports.sortByDifficulty = void 0;
+var colors = require('colors');
 var axios_1 = require("axios");
+// A better way fo manage the error in the catch?
 var fetchQuestions = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var res, data, filteredData;
+    var res, data, filteredData, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, (0, axios_1["default"])('https://the-trivia-api.com/api/questions?limit=5')];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, (0, axios_1["default"])('https://the-trivia-api.com/api/questions?limit=5')];
             case 1:
                 res = _a.sent();
                 data = res.data;
                 filteredData = data.filter(function (q) { return !q.tags.includes('film'); });
                 return [2 /*return*/, filteredData];
+            case 2:
+                error_1 = _a.sent();
+                console.log(error_1);
+                return [2 /*return*/, [{
+                            id: '',
+                            category: '',
+                            question: '',
+                            difficulty: '',
+                            tags: [''],
+                            difficultyValue: 1
+                        }]];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
@@ -99,3 +115,10 @@ var sortByDifficulty = function (questions) {
     return arr.sort(function (a, b) { return a.difficultyValue - b.difficultyValue; });
 };
 exports.sortByDifficulty = sortByDifficulty;
+var displayQuestions = function (questions) {
+    questions.forEach(function (_a) {
+        var question = _a.question, difficulty = _a.difficulty;
+        console.log("".concat(colors.cyan("".concat(question)).bold, " || ").concat(colors.magenta("Difficulty: ".concat(difficulty)).italic, "\n"));
+    });
+};
+exports.displayQuestions = displayQuestions;

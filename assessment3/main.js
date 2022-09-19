@@ -36,12 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var colors = require('colors');
 var helpers_1 = require("./helpers");
-// Fetch a set of questions from https://the-trivia-api.com/api/questions?limit=5
-// Filter out any questions with tag "film"
-// Sort them according to the difficulty
-// Log the output to the user
 var init = function () { return __awaiter(void 0, void 0, void 0, function () {
     var questions, formattedData;
     return __generator(this, function (_a) {
@@ -52,10 +47,7 @@ var init = function () { return __awaiter(void 0, void 0, void 0, function () {
             case 1:
                 questions = _a.sent();
                 formattedData = (0, helpers_1.sortByDifficulty)(questions);
-                formattedData.forEach(function (_a) {
-                    var question = _a.question, difficulty = _a.difficulty;
-                    console.log("".concat(colors.cyan("".concat(question)).bold, " || ").concat(colors.magenta("Difficulty: ".concat(difficulty)).italic, "\n"));
-                });
+                (0, helpers_1.displayQuestions)(formattedData);
                 return [2 /*return*/];
         }
     });
