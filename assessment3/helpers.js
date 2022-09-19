@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,35 +46,56 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 exports.__esModule = true;
-var colors = require('colors');
-var helpers_1 = require("./helpers");
-// Fetch a set of questions from https://the-trivia-api.com/api/questions?limit=5
-// Filter out any questions with tag "film"
-// Sort them according to the difficulty
-// Log the output to the user
-var init = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var questions, formattedData;
+exports.fetchQuestions = exports.sortByDifficulty = void 0;
+var axios_1 = require("axios");
+var fetchQuestions = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var res, data, filteredData;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                console.clear();
-                return [4 /*yield*/, (0, helpers_1.fetchQuestions)()];
+            case 0: return [4 /*yield*/, (0, axios_1["default"])('https://the-trivia-api.com/api/questions?limit=5')];
             case 1:
-                questions = _a.sent();
-                formattedData = (0, helpers_1.sortByDifficulty)(questions);
-                formattedData.forEach(function (_a) {
-                    var question = _a.question, difficulty = _a.difficulty;
-                    console.log("".concat(colors.cyan("".concat(question)).bold, " || ").concat(colors.magenta("Difficulty: ".concat(difficulty)).italic, "\n"));
-                });
-                return [2 /*return*/];
+                res = _a.sent();
+                data = res.data;
+                filteredData = data.filter(function (q) { return !q.tags.includes('film'); });
+                return [2 /*return*/, filteredData];
         }
     });
 }); };
-init();
-// Output:
-// According to the Christmas song what did my true love give to me on the fifth day of Christmas? || Difficulty: easy
-// Who wrote "The Hobbit"? || Difficulty: easy
-// In which country is the city of Shenzhen? || Difficulty: easy
-// From which part of the world do squashes originate? || Difficulty: medium
-// Which author wrote 'On Paths of Life'? || Difficulty: hard
+exports.fetchQuestions = fetchQuestions;
+var sortByDifficulty = function (questions) {
+    var arr = [];
+    // Add difficultyValue to each question.
+    questions.forEach(function ($question) {
+        var difficulty = $question.difficulty, rest = __rest($question, ["difficulty"]);
+        var difficultyValue = 0;
+        switch (difficulty) {
+            case "hard":
+                difficultyValue = 3;
+                break;
+            case "medium":
+                difficultyValue = 2;
+                break;
+            case "easy":
+                difficultyValue = 1;
+                break;
+            default:
+                difficultyValue = 1;
+                break;
+        }
+        arr.push(__assign(__assign({ difficulty: difficulty }, rest), { difficultyValue: difficultyValue }));
+    });
+    return arr.sort(function (a, b) { return a.difficultyValue - b.difficultyValue; });
+};
+exports.sortByDifficulty = sortByDifficulty;

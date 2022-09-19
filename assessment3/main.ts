@@ -1,65 +1,33 @@
-const axios = require('axios').default;
 const colors = require('colors');
-type Question = {
-    "id": string,
-    "question": string,
-    "difficulty": string,
-    "category": string
-    "tags": string[]
-    "difficultyValue": number
-}
+
+import { Question } from "./types";
+import { sortByDifficulty, fetchQuestions } from "./helpers";
 
 // Fetch a set of questions from https://the-trivia-api.com/api/questions?limit=5
 // Filter out any questions with tag "film"
 // Sort them according to the difficulty
 // Log the output to the user
 
-const fetchQuestions = async (): Promise<void> => {
-    const res = await axios('https://the-trivia-api.com/api/questions?limit=5')
-    // const data = await res.json()
-    const data: Question[] = res.data
-    const filteredData: Question[] = data.filter(q => !q.tags.includes('film'))
+const init = async (): Promise<void> => {
 
-    const arr: Question[] = []
+    console.clear();
 
-    // Add difficultyValue to each question.
-    filteredData.forEach(($question: Question) => {
+    const questions: Question[] = await fetchQuestions();
+    const formattedData: Question[] = sortByDifficulty(questions);
 
-        let { difficulty, ...rest } = $question;
-
-        let difficultyValue: number = 0;
-        switch (difficulty) {
-            case "hard":
-                difficultyValue = 3
-                arr.push({ difficulty, ...rest, difficultyValue, })
-                break;
-            case "medium":
-                difficultyValue = 2
-                arr.push({ difficulty, ...rest, difficultyValue })
-                break;
-            case "easy":
-                difficultyValue = 1
-                arr.push({ difficulty, ...rest, difficultyValue })
-                break;
-            default:
-                difficultyValue = 1
-                arr.push({ difficulty, ...rest, difficultyValue })
-                break;
-        }
-
-    })
-    const sortedArray: Question[] = arr.sort((a: Question, b: Question) => a.difficultyValue - b.difficultyValue)
-
-    sortedArray.forEach(({ question, difficulty }) => {
-        console.log(`\n${colors.cyan(`${question}`).bold} || ${colors.magenta(`Difficulty: ${difficulty}`).italic}\n`)
+    formattedData.forEach(({ question, difficulty }) => {
+        console.log(`${colors.cyan(`${question}`).bold} || ${colors.magenta(`Difficulty: ${difficulty}`).italic}\n`);
     })
 }
 
-fetchQuestions()
-// Sample Output:
-// Who succeeded Winston Churchill when he resigned in 1955?
-// Which author wrote 'The Left Hand of Darkness'?
-// Who was the first female American astronaut?
+init();
+
+// Output:
+// According to the Christmas song what did my true love give to me on the fifth day of Christmas? || Difficulty: easy
+// Who wrote "The Hobbit"? || Difficulty: easy
+// In which country is the city of Shenzhen? || Difficulty: easy
+// From which part of the world do squashes originate? || Difficulty: medium
+// Which author wrote 'On Paths of Life'? || Difficulty: hard
 
 
 
