@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {},
+    "include": [
+      "**/*.test.ts"
+    ],
+    "types": [ "node" ],
+    "typeRoots": [ "../node_modules/@types" ]
+  }
+  
