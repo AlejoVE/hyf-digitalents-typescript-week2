@@ -14,7 +14,7 @@ type Question = {
 // Sort them according to the difficulty
 // Log the output to the user
 
-const fetchQuestion = async (): Promise<void> => {
+const fetchQuestions = async (): Promise<void> => {
     const res = await axios('https://the-trivia-api.com/api/questions?limit=5')
     // const data = await res.json()
     const data: Question[] = res.data
@@ -55,7 +55,7 @@ const fetchQuestion = async (): Promise<void> => {
     })
 }
 
-fetchQuestion()
+fetchQuestions()
 // Sample Output:
 // Who succeeded Winston Churchill when he resigned in 1955?
 // Which author wrote 'The Left Hand of Darkness'?
