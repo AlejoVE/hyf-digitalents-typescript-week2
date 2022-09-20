@@ -5,7 +5,7 @@ const aString: string = 'Hello';
 const aBigInt: bigint = BigInt(100);
 const anArray: (string | number)[] = ['hello', 2]
 const anUnknown: unknown = null;
-const anObject: object = {name: 'Alejo', age: 28};
+const anObject: object = { name: 'Alejo', age: 28 };
 const aTuple: [string, number] = ['Bye', 5];
 enum AnEnum {
     first,
@@ -35,7 +35,7 @@ const joe: Developer = {
     role: 'Devops'
 }
 
-const people: [Person, Developer] =  [
+const people: [Person, Developer] = [
     jane, joe
 ]
 
@@ -43,7 +43,11 @@ type People = (Person | Developer)[]
 
 function printPeople(people: People): void {
     // Print the name of person or the role in this function
-    people.forEach(console.log);
+    people.forEach(person => {
+        for (const key in person) {
+            console.log(`${key}: ${person[key]}`)
+        }
+    });
 }
 
 // Type the encrpyt function correctly
@@ -52,19 +56,19 @@ const encryptText = (plainText: string, shift: number) => {
     let cipherLetter: string;
 
     plainText.split("").map(letter => {
-      let code = letter.charCodeAt((letter))
-      if(letter === " ") {
-        return cipherArr.push(letter)
-      }
-      // Uppercase letters
-      if (code >= 65 && code <= 90) {
-        cipherLetter = String.fromCharCode(((code - 65 + shift) % 26) + 65)
-      }
-      // Lowercase letters
-      else if (code >= 97 && code <= 122) {
-        cipherLetter = String.fromCharCode(((code - 97 + shift) % 26) + 97)
-      }
-      return cipherArr.push(cipherLetter)
+        let code = letter.charCodeAt((letter))
+        if (letter === " ") {
+            return cipherArr.push(letter)
+        }
+        // Uppercase letters
+        if (code >= 65 && code <= 90) {
+            cipherLetter = String.fromCharCode(((code - 65 + shift) % 26) + 65)
+        }
+        // Lowercase letters
+        else if (code >= 97 && code <= 122) {
+            cipherLetter = String.fromCharCode(((code - 97 + shift) % 26) + 97)
+        }
+        return cipherArr.push(cipherLetter)
     })
     return cipherArr.join("")
 }
@@ -91,21 +95,20 @@ type ChocolateLover = {
 }
 
 type Belgian = Complainer & Beerdrinker & ChocolateLover;
-function doBelgianThings(belgian: Belgian): void
-{
+function doBelgianThings(belgian: Belgian): void {
     belgian.complains();
     belgian.drinkBeer();
     belgian.eatChocolate();
 }
 
 const me: Belgian = {
-    complains: ():void => {
-        console.log('Oh no, this beer is hot!')
+    complains: (): void => {
+        console.log('I hate this weather')
     },
-    drinkBeer: ():void => {
+    drinkBeer: (): void => {
         console.log('Two Tripel Karmeliet please!')
     },
-    eatChocolate: ():void => {
+    eatChocolate: (): void => {
         console.log('I want more chocolate!')
     }
 }
